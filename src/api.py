@@ -42,9 +42,9 @@ try:
     
     encoder = joblib.load(ENCODER_PATH)
     EXPECTED_FEATURES = model.get_booster().feature_names
-    print(f"✅ Modèle chargé ({len(EXPECTED_FEATURES)} features attendues).")
+    print(f"Modèle chargé ({len(EXPECTED_FEATURES)} features attendues).")
 except Exception as e:
-    raise RuntimeError(f"❌ Impossible de démarrer l'API, erreur modèle : {e}")
+    raise RuntimeError(f"Impossible de démarrer l'API, erreur modèle : {e}")
 
 class NetworkFlow(BaseModel):
     features: Dict[str, float]
