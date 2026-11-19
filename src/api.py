@@ -8,6 +8,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from prometheus_fastapi_instrumentator import Instrumentator
 from prometheus_client import Counter, Histogram
+from src.rag_engine import SocCopilotRAG
+
+# Chargement paresseux (initialisé uniquement au premier appel de /explain-alert)
+rag_copilot = None
 
 app = FastAPI(title="NIDS ML API", description="API de Détection d'Intrusion Réseau")
 
@@ -45,6 +49,11 @@ except Exception as e:
 class NetworkFlow(BaseModel):
     features: Dict[str, float]
 
+class AlertRequest(BaseModel):
+    attack_type: str
+    confidence: float
+    dest_port: float = 0.0
+
 @app.get("/")
 def read_root():
     return {"message": "NIDS API est en ligne et prête à prédire."}
@@ -81,3 +90,26 @@ def predict_traffic(flow: NetworkFlow):
         "prediction": prediction_label,
         "confidence": round(confidence, 4)
     }
+
+@app.post("/explain-alert")
+def explain_alert(alert: AlertRequest):
+    global rag_copilot
+    try:
+        if rag_copilot is None:
+            rag_copilot = SocCopilotRAG()
+        
+        report = rag_copilot.explain_alert(
+            attack_type=alert.attack_type,
+            confidence=alert.confidence,
+            dest_port=alert.dest_port
+        )
+        return {
+            "status": "success",
+            "attack_type": alert.attack_type,
+            "report": report
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur du Copilot RAG : {str(e)}"
+        )

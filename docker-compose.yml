@@ -4,6 +4,8 @@ services:
     container_name: nids-api
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     restart: unless-stopped
 
   prometheus:

@@ -6,3 +6,5 @@ notebooks/
 .env
 models/*.pkl
 !models/label_encoder.pkl
+mlruns/
+mlflow.db

@@ -1,4 +1,5 @@
 .venv/
+.env
 data/
 notebooks/
 __pycache__/
@@ -6,3 +7,5 @@ __pycache__/
 .pytest_cache/
 *.pkl
 !models/label_encoder.pkl
+mlruns/
+mlflow.db
