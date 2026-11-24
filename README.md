@@ -153,8 +153,8 @@ Network_Intrusion_Detection_System/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Saad-Dairi/Network_Intrusion_Detection_System.git
-cd Network_Intrusion_Detection_System
+git clone https://github.com/Moha1112/nids-mlops-pipeline.git
+cd nids-mlops-pipeline.git
 ```
 
 ### 2. Create the `.env` file
